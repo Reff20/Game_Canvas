@@ -69,7 +69,15 @@ const flappyBird = {
   y: 50,
   gravidade: 0.25,
   velocidade: 0,
+  pulo: 5,
+  pula(){
+    flappyBird.velocidade = - flappyBird.pulo
+  },
   atualiza(){
+    if(colisaoChao((flappyBird.y + 30), chao.y)){
+      mudaParaTela(telas.INICIO)
+      return;
+    }
     flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
     flappyBird.y = flappyBird.y + flappyBird.velocidade;
   },
@@ -113,7 +121,7 @@ const telas = {
       planoDeFundo.desenha();
       chao.desenha();
       messageGetReady.desenha();
-      // flappyBird.desenha();
+      flappyBird.desenha();
     },
     click(){
       mudaParaTela(telas.JOGO)
@@ -129,7 +137,7 @@ const telas = {
       flappyBird.desenha();
     },
     click(){
-      
+      flappyBird.pula();
     },
     atualiza(){
       flappyBird.atualiza();
@@ -137,7 +145,11 @@ const telas = {
   }
 }
 
-
+function colisaoChao(bird, block){
+  if(bird >= block){
+    return true;
+  }else return false;
+}
 
 
 function loop() {
