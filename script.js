@@ -1,70 +1,95 @@
-(function () {
-  const canvas = document.getElementById("gameCanvas");
-  const ctx = canvas.getContext("2d");
+const sprites = new Image();
+sprites.src = './sprites.png';
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+const canvas = document.querySelector('canvas');
+const contexto = canvas.getContext('2d');
 
-  class Player {
-    constructor(x, y, radius, color) {
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.color = color;
-    }
+const planoDeFundo = {
+  spriteX: 390,
+  spriteY: 0,
+  largura: 275,
+  altura: 204,
+  x: 0,
+  y: canvas.height - 204,
+  desenha() {
+    contexto.fillStyle = '#70c5ce';
+    contexto.fillRect(0,0, canvas.width, canvas.height)
 
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-    }
-  }
-
-  class Projectile {
-    constructor(x, y, radius, color, velocity) {
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
-      this.color = color;
-      this.velocity = velocity;
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-    }
-
-    update() {
-      this.draw();
-      this.x = this.x + this.velocity.x;
-      this.y = this.y + this.velocity.y;
-    }
-  }
-
-  const x = canvas.width / 2;
-  const y = canvas.height / 2;
-
-  const p = new Player(x, y, 30, "#f3f3f3"); // Instance of Player
-  p.draw();
-
-  const projectiles = [projectile];
-
-  const animate = () => {
-    requestAnimationFrame(animate);
-    projectiles.forEach((projectile) => {
-      projectile.update();
-    });
-  };
-
-  addEventListener("click", (e) => {
-    projectiles.push(
-      new Projectile(canvas.width / 2, canvas.height / 2, 5, "#7ffc03", {
-        x: 1,
-        y: 1,
-      })
+    contexto.drawImage(
+      sprites,
+      planoDeFundo.spriteX, planoDeFundo.spriteY,
+      planoDeFundo.largura, planoDeFundo.altura,
+      planoDeFundo.x, planoDeFundo.y,
+      planoDeFundo.largura, planoDeFundo.altura,
     );
-  });
-})();
+
+    contexto.drawImage(
+      sprites,
+      planoDeFundo.spriteX, planoDeFundo.spriteY,
+      planoDeFundo.largura, planoDeFundo.altura,
+      (planoDeFundo.x + planoDeFundo.largura), planoDeFundo.y,
+      planoDeFundo.largura, planoDeFundo.altura,
+    );
+  },
+};
+
+// [Chao]
+const chao = {
+  spriteX: 0,
+  spriteY: 610,
+  largura: 224,
+  altura: 112,
+  x: 0,
+  y: canvas.height - 112,
+  desenha() {
+    contexto.drawImage(
+      sprites,
+      chao.spriteX, chao.spriteY,
+      chao.largura, chao.altura,
+      chao.x, chao.y,
+      chao.largura, chao.altura,
+    );
+
+    contexto.drawImage(
+      sprites,
+      chao.spriteX, chao.spriteY,
+      chao.largura, chao.altura,
+      (chao.x + chao.largura), chao.y,
+      chao.largura, chao.altura,
+    );
+  },
+};
+
+const flappyBird = {
+  spriteX: 0,
+  spriteY: 0,
+  largura: 33,
+  altura: 24,
+  x: 10,
+  y: 50,
+  gravidade: 0.25,
+  velocidade: 0,
+  atualiza(){
+    flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
+    flappyBird.y = flappyBird.y + flappyBird.velocidade;
+  },
+  desenha() {
+    contexto.drawImage(
+      sprites,
+      flappyBird.spriteX, flappyBird.spriteY, // Sprite X, Sprite Y
+      flappyBird.largura, flappyBird.altura, // Tamanho do recorte na sprite
+      flappyBird.x, flappyBird.y,
+      flappyBird.largura, flappyBird.altura,
+    );
+  },
+}
+
+function loop() {
+  planoDeFundo.desenha();
+  chao.desenha();
+  flappyBird.desenha();
+  flappyBird.atualiza()
+  requestAnimationFrame(loop);
+}
+
+loop();
