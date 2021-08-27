@@ -1,6 +1,9 @@
 const sprites = new Image();
 sprites.src = './sprites.png';
 
+const som_HIT = new Audio();
+som_HIT.src = './efeitos/hit.wav'
+
 const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 
@@ -75,6 +78,7 @@ const flappyBird = {
   },
   atualiza(){
     if(colisaoChao((flappyBird.y + 30), chao.y)){
+      som_HIT.play()
       mudaParaTela(telas.INICIO)
       return;
     }
@@ -112,6 +116,7 @@ const messageGetReady = {
 
 let telaAtiva = {};
 function mudaParaTela(novaTela) {
+  resetBird();
   telaAtiva = novaTela;
 }
 
@@ -149,6 +154,16 @@ function colisaoChao(bird, block){
   if(bird >= block){
     return true;
   }else return false;
+}
+
+function resetBird(){
+  flappyBird.spriteX = 0;
+  flappyBird.spriteY = 0;
+  flappyBird.x = 10;
+  flappyBird.y = 50;
+  flappyBird.gravidade = 0.25;
+  flappyBird.velocidade = 0;
+  flappyBird.pulo = 5
 }
 
 
