@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #111;
+    color: #f8f8f8;
+}
+canvas {
+    background: #111;
+    padding: 0;
+    margin: auto;
+    display: block;
+}
